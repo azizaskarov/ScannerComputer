@@ -44,37 +44,28 @@
 
                         <TextBlock Grid.Row="0"  x:Name="textTitle" VerticalAlignment="Center" FontSize="22" FontWeight="Medium" FontStyle="Normal"  HorizontalAlignment="Center" Text="Авторизация"/>
 
-                        <StackPanel Grid.Row="1" x:Uid="panel_id" x:Name="panel_id" Margin="5,0,5,0" Visibility="Collapsed">
-
-                            <TextBlock Text="ID" Foreground="#686868" FontSize="20px" FontFamily="Roboto" Margin="5 10 0 0"/>
-
-                            <TextBox x:Uid="text_id" x:Name="text_id" materialDesign:HintAssist.Hint="ID" Height="35" TabIndex="1" MaxLength="12" FontSize="20" Margin="5,5,5,5" Style="{StaticResource txtLogin}" CaretBrush="#FF4285F4" SelectionBrush="#FF4285F4"/>
-                        </StackPanel>
-
                         <StackPanel Grid.Row="1"  x:Uid="panel_login" x:Name="panel_login" Margin="5,34,5,0">
-
                             <TextBlock Text="Логин" Foreground="#686868" FontSize="20px" FontFamily="Roboto" Margin="5 10 0 0"/>
-
-                            <TextBox x:Uid="text_login" x:Name="text_login" TabIndex="2" materialDesign:HintAssist.Hint="Логин" Height="35" Text="" FontSize="20" Style="{StaticResource txtLogin}" Margin="5,5,5,5" MaxLength="20"/>
+                            <TextBox x:Uid="text_login" x:Name="text_login" PreviewTextInput="text_passw_hide_PreviewTextInput"   materialDesign:HintAssist.Hint="Логин" Height="35" Text="" FontSize="20" Style="{StaticResource txtLogin}" Margin="5,5,5,5" MaxLength="20"/>
                         </StackPanel>
+
                         <StackPanel Grid.Row="2"  x:Uid="panel_passw" x:Name="panel_passw" Margin="5,0,5,0">
-
                             <TextBlock Text="Пароль" Foreground="#686868" FontSize="20px" FontFamily="Roboto" Margin="5 10 0 0"/>
-
                             <Border Margin="5 5 5 0" CornerRadius="5" Height="35" Background="#FFFFFF" BorderThickness="1" BorderBrush="#BEBEBE" Padding="0">
-                                <PasswordBox x:Name="text_password" Foreground="#686868" Padding="10 5 0 0" Style="{StaticResource MaterialDesignRevealPasswordBox}" FontSize="20" BorderThickness="0" Password="" Margin="0 0 10 0" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible" PreviewTextInput="text_passw_hide_PreviewTextInput">
+                                <PasswordBox x:Name="text_password" 
+                                             Foreground="#686868" Padding="10 5 0 0" Style="{StaticResource MaterialDesignRevealPasswordBox}" FontSize="20" BorderThickness="0" 
+                                             Margin="0 0 10 0" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible" PreviewTextInput="text_passw_hide_PreviewTextInput">
                                 </PasswordBox>
-
                             </Border>
 
                         </StackPanel>
+
                         <StackPanel Grid.Row="2" x:Name="panel_rememb" Margin="5,88,5,0" Grid.RowSpan="2" >
-                            <CheckBox x:Name="checkBox1" materialDesign:CheckBoxAssist.CheckBoxSize="20" Content ="Запомнить меня" FontSize="18px" Style="{StaticResource MaterialDesignAccentCheckBox}"  Margin="5,5,0,5" Background="#FF3D5AFE" BorderBrush="#FF6200EE" Foreground="#686868" VerticalContentAlignment="Stretch" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" TabIndex="4" IsChecked="False"/>
+                            <CheckBox x:Name="checkBox" materialDesign:CheckBoxAssist.CheckBoxSize="20" Content ="Запомнить меня" FontSize="18px" Style="{StaticResource MaterialDesignAccentCheckBox}"  Margin="5,5,0,5" Background="#FF3D5AFE" 
+                                      BorderBrush="#FF6200EE" Foreground="#686868" VerticalContentAlignment="Stretch" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" TabIndex="4" IsChecked="False" />
                         </StackPanel>
 
-
                         <Button Grid.Row="4" Height="40"  Content="Войти" Style="{StaticResource btnAuth}" Background="{StaticResource MenuColor}" VerticalAlignment="Top"  Margin="8 20 8 0" x:Name="butt_Log" Click="butt_Log_Click">
-
                         </Button>
 
                     </Grid>

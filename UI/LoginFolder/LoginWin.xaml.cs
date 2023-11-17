@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Input;
+using Scanner.UI.MainMenuFolder;
 
 namespace Scanner.UI.LoginFolder;
 
@@ -34,9 +36,38 @@ public partial class LoginWin : Window
 
     private void butt_Log_Click(object sender, RoutedEventArgs e)
     {
+        var userLogin = text_login.Text;
+        string userPassword = text_password.Password;
+
+        if (userLogin != "" && userPassword != "")
+        {
+            if (checkBox.IsChecked == true)
+            {
+                Properties.Settings.Default.UserLogin = text_login.Text;
+                Properties.Settings.Default.UserPassword = text_password.Password;
+                Properties.Settings.Default.Save();
+            }
+
+            var mainWin = new MainMenuWin();
+            mainWin.Show();
+            this.Hide();
+        }
+        else
+        {
+            MessageBox.Show("Pusoy polya");
+        }
     }
 
     private void text_passw_hide_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
+        string pattern = @"^[ЁёА-яa-zA-Z0-9]+$";
+
+        Regex regex = new Regex(pattern);
+
+        if (!regex.IsMatch(e.Text))
+        {
+            e.Handled = true;
+        }
     }
+
 }

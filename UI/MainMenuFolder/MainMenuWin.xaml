@@ -1,0 +1,137 @@
+﻿<Window x:Class="Scanner.UI.MainMenuFolder.MainMenuWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Scanner.UI.MainMenuFolder"
+        xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+        mc:Ignorable="d"
+        Title="MainMenu" Height="730" Width="1024" MinHeight="730" MinWidth="1024" Closed="Window_Closed"  Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" AllowsTransparency="True" Background="Transparent" WindowStyle="None" >
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <Storyboard x:Key="OpenMenu">
+
+
+
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="gridMenu">
+                <EasingDoubleKeyFrame KeyTime="0" Value="50"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="164.32"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ThicknessAnimation Storyboard.TargetProperty="Margin" Storyboard.TargetName="grid_content_main" Duration="0:0:0.5" From="50,0,0,0" To="164.32,0,0,0"/>
+
+        </Storyboard>
+
+        <Storyboard x:Key="CloseMenu">
+
+
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="gridMenu">
+                <EasingDoubleKeyFrame KeyTime="0" Value="164.32"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="50"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ThicknessAnimation Storyboard.TargetProperty="Margin" Storyboard.TargetName="grid_content_main" Duration="0:0:0.5" From="164.32,0,0,0" To="50,0,0,0"/>
+        </Storyboard>
+
+        <Storyboard x:Key="OpenMenuFast">
+
+
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="gridMenu">
+                <EasingDoubleKeyFrame KeyTime="0" Value="50"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="164.32"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ThicknessAnimation Storyboard.TargetProperty="Margin" Storyboard.TargetName="grid_content_main" Duration="0:0:0" From="50,0,0,0" To="164.32,0,0,0"/>
+
+        </Storyboard>
+
+        <Storyboard x:Key="CloseMenuFast">
+
+
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="gridMenu">
+                <EasingDoubleKeyFrame KeyTime="0" Value="164.32"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="50"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ThicknessAnimation Storyboard.TargetProperty="Margin" Storyboard.TargetName="grid_content_main" Duration="0:0:0" From="164.32,0,0,0" To="0,0,0,0"/>
+        </Storyboard>
+
+    </Window.Resources>
+
+
+    <Border Background="#FFEFF1F3" BorderThickness="1" BorderBrush="{StaticResource MenuColor}">
+        <Grid >
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Background="{StaticResource MenuColor}" MouseDown="Grid_MouseDown" Margin="-1 -1 -1 0">
+                <Grid.Effect>
+                    <DropShadowEffect ShadowDepth="2" BlurRadius="5"/>
+                </Grid.Effect>
+
+                <Button x:Name="butt_Hide" Style="{StaticResource MinusButtonStyle}" Width="40" Height="36" HorizontalAlignment="Right" Margin="10 0 80 0" Padding="0" Visibility="Visible" Click="butt_Hide_Click">
+                    <fa:IconImage Icon="Minus" Width="15" Height="15" Foreground="White" RenderTransformOrigin="0.5,0.896"/>
+                </Button>
+
+                <Button x:Name="butt_Resize" Style="{StaticResource MinusButtonStyle}" Width="40" Height="36" HorizontalAlignment="Right" Margin="0 -0 40 0" Padding="0" Visibility="Visible" Click="butt_Resize_Click">
+                    <fa:IconImage Icon="Square" Width="15" Height="15" Foreground="White"/>
+                </Button>
+                <Button Width="40" Height="36" Style="{StaticResource btnXHover}" BorderBrush="{x:Null}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 0 0" Padding="0" Click="ExitBtn_Click" Visibility="Visible">
+                    <fa:IconImage Icon="X" Width="15" Height="15" Foreground="White"/>
+                </Button>
+
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Button Name="zapuskBtn" Style="{StaticResource btnAuth}" Content="Запуск" VerticalAlignment="Top"  Margin="0 50 0 0" FontSize="35" Click="ZapuskBtn_OnClick" Height="80" Width="200"/>
+
+                <TextBlock Name="textBlockIP" Margin="5,164,5,64"  TextWrapping="Wrap" TextAlignment="Center" FontSize="30"  />
+            </Grid>
+
+            <!--<Grid Grid.Row="1">
+
+                <Grid x:Name="gridMenu" HorizontalAlignment="Left" Width="164.32" Background="{StaticResource MenuColor}">
+
+                    <StackPanel>
+                        <Button x:Name="butt_menu" Click="butt_menu_Click" HorizontalAlignment="Left"  VerticalAlignment="Center" Width="164.32" Height="35" Background="{x:Null}" BorderBrush="{x:Null}">
+
+                            <DockPanel HorizontalAlignment="Left" Margin="-67 0 0 0">
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Rectangle x:Name="rectangle" Width="20" Height="2" Margin=" 0 0 0 0" Fill="White" HorizontalAlignment="Center" VerticalAlignment="top" RenderTransformOrigin="-0,0.5">
+                                        <Rectangle.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform/>
+                                                <SkewTransform/>
+                                                <RotateTransform/>
+                                                <TranslateTransform/>
+                                            </TransformGroup>
+                                        </Rectangle.RenderTransform>
+                                    </Rectangle>
+                                    <Rectangle x:Name="rectangle1" Width="20" Height="2" Margin=" 0 12 0 0" Fill="White" HorizontalAlignment="Center" VerticalAlignment="top" RenderTransformOrigin="-0,0.5">
+                                        <Rectangle.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform/>
+                                                <SkewTransform/>
+                                                <RotateTransform/>
+                                                <TranslateTransform/>
+                                            </TransformGroup>
+                                        </Rectangle.RenderTransform>
+                                    </Rectangle>
+                                    <Rectangle x:Name="rectangle2" Width="20" Height="2" Margin=" 0 6 0 0" Fill="White" HorizontalAlignment="Center" VerticalAlignment="top"/>
+                                </Grid>
+                            </DockPanel>
+                        </Button>
+
+
+                    </StackPanel>
+
+                    <Grid x:Name="grid_content_main"  DockPanel.Dock="Bottom">
+                        <ContentControl Grid.Row="0" x:Name="content_main" Margin="0,0,0,0"/>
+                    </Grid>
+                </Grid>
+            </Grid>-->
+        </Grid>
+    </Border>
+</Window>

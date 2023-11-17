@@ -18,6 +18,7 @@ namespace Scanner
         {
             var loginWin = new LoginWin();
             loginWin.Show();
+            this.Visibility = Visibility.Collapsed;
         }
     }
 }
