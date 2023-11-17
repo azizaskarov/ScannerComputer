@@ -1,0 +1,88 @@
+﻿<Window x:Class="Scanner.UI.LoginFolder.LoginWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Scanner.UI.LoginFolder"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+        mc:Ignorable="d"
+        Title="LoginWindow" Height="500"  Width="450" MinHeight="500"  MinWidth="450" BorderThickness="0" Closed="Window_Closed" AllowsTransparency="True" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize"  FontSize="16" FontFamily="Roboto">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+
+        <Border Background="{StaticResource MenuColor}" MouseDown="Border_MouseDown" Grid.ColumnSpan="2">
+            <Grid>
+
+                <Button Width="40" Height="40" Style="{StaticResource btnXHover}" HorizontalAlignment="Right" Margin="0 0 0 0" Padding="0" Click="ExitBtn_Click" Visibility="Visible">
+                    <fa:IconImage Icon="X" Width="15" Height="15" Foreground="White"/>
+                </Button>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="0 0 0 0" Background="#EDEDED">
+
+            <Border BorderBrush="Gray" BorderThickness="1 1 1 1">
+                <DockPanel x:Uid="DockPanel_1" Grid.Column="0">
+                    <Grid>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition Height="55"/>
+                            <RowDefinition Height="100"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"  x:Name="textTitle" VerticalAlignment="Center" FontSize="22" FontWeight="Medium" FontStyle="Normal"  HorizontalAlignment="Center" Text="Авторизация"/>
+
+                        <StackPanel Grid.Row="1" x:Uid="panel_id" x:Name="panel_id" Margin="5,0,5,0" Visibility="Collapsed">
+
+                            <TextBlock Text="ID" Foreground="#686868" FontSize="20px" FontFamily="Roboto" Margin="5 10 0 0"/>
+
+                            <TextBox x:Uid="text_id" x:Name="text_id" materialDesign:HintAssist.Hint="ID" Height="35" TabIndex="1" MaxLength="12" FontSize="20" Margin="5,5,5,5" Style="{StaticResource txtLogin}" CaretBrush="#FF4285F4" SelectionBrush="#FF4285F4"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1"  x:Uid="panel_login" x:Name="panel_login" Margin="5,34,5,0">
+
+                            <TextBlock Text="Логин" Foreground="#686868" FontSize="20px" FontFamily="Roboto" Margin="5 10 0 0"/>
+
+                            <TextBox x:Uid="text_login" x:Name="text_login" TabIndex="2" materialDesign:HintAssist.Hint="Логин" Height="35" Text="" FontSize="20" Style="{StaticResource txtLogin}" Margin="5,5,5,5" MaxLength="20"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2"  x:Uid="panel_passw" x:Name="panel_passw" Margin="5,0,5,0">
+
+                            <TextBlock Text="Пароль" Foreground="#686868" FontSize="20px" FontFamily="Roboto" Margin="5 10 0 0"/>
+
+                            <Border Margin="5 5 5 0" CornerRadius="5" Height="35" Background="#FFFFFF" BorderThickness="1" BorderBrush="#BEBEBE" Padding="0">
+                                <PasswordBox x:Name="text_password" Foreground="#686868" Padding="10 5 0 0" Style="{StaticResource MaterialDesignRevealPasswordBox}" FontSize="20" BorderThickness="0" Password="" Margin="0 0 10 0" MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible" PreviewTextInput="text_passw_hide_PreviewTextInput">
+                                </PasswordBox>
+
+                            </Border>
+
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" x:Name="panel_rememb" Margin="5,88,5,0" Grid.RowSpan="2" >
+                            <CheckBox x:Name="checkBox1" materialDesign:CheckBoxAssist.CheckBoxSize="20" Content ="Запомнить меня" FontSize="18px" Style="{StaticResource MaterialDesignAccentCheckBox}"  Margin="5,5,0,5" Background="#FF3D5AFE" BorderBrush="#FF6200EE" Foreground="#686868" VerticalContentAlignment="Stretch" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" TabIndex="4" IsChecked="False"/>
+                        </StackPanel>
+
+
+                        <Button Grid.Row="4" Height="40"  Content="Войти" Style="{StaticResource btnAuth}" Background="{StaticResource MenuColor}" VerticalAlignment="Top"  Margin="8 20 8 0" x:Name="butt_Log" Click="butt_Log_Click">
+
+                        </Button>
+
+                    </Grid>
+                </DockPanel>
+            </Border>
+
+        </Grid>
+
+    </Grid>
+</Window>
+
