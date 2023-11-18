@@ -85,9 +85,12 @@
             </Grid>
 
             <Grid Grid.Row="1">
-                <Button Name="zapuskBtn" Style="{StaticResource btnAuth}" Content="Запуск" VerticalAlignment="Top"  Margin="0 50 0 0" FontSize="35" Click="ZapuskBtn_OnClick" Height="80" Width="200"/>
+                <Button Name="zapuskBtn" Style="{StaticResource btnAuth}" Content="Запуск" VerticalAlignment="Top"  Margin="411,34,411,0" FontSize="35" Click="ZapuskBtn_OnClick" Height="80" Width="200"/>
+                <Button Name="add" Style="{StaticResource btnAuth}" Content="Add" VerticalAlignment="Top" VerticalContentAlignment="Bottom" FontSize="35" Click="Add_OnClick" Height="55" Margin="859,633,8,0"/>
 
-                <TextBlock Name="textBlockIP" Margin="5,164,5,64"  TextWrapping="Wrap" TextAlignment="Center" FontSize="30"  />
+                <ScrollViewer VerticalScrollBarVisibility="Auto"  Margin="10,120,10,70" >
+                    <ListBox Margin="5" Name="ListView"  FontSize="20" Height="490" Width="983"/>
+                </ScrollViewer>
             </Grid>
 
             <!--<Grid Grid.Row="1">

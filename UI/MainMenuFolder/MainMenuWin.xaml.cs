@@ -1,8 +1,12 @@
-﻿using System.Net;
+﻿using System.Diagnostics;
+using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using Microsoft.VisualBasic.Devices;
 
 namespace Scanner.UI.MainMenuFolder;
 
@@ -15,7 +19,17 @@ public partial class MainMenuWin : Window
     {
         InitializeComponent();
     }
-    private ComputerInfo computerInfo = new();
+
+
+
+    [DllImport("user32.dll")]
+    static extern IntPtr GetForegroundWindow();
+
+    [DllImport("user32.dll")]
+    static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+
+    [DllImport("user32.dll")]
+    static extern bool IsWindowVisible(IntPtr hWnd);
 
     public bool StateClosed = false;
     private void Window_Closed(object? sender, EventArgs e)
@@ -73,32 +87,37 @@ public partial class MainMenuWin : Window
 
 
 
+
+    private List<string> GetCurrentProccessApps()
+    {
+        Process[] processlist = Process.GetProcesses();
+        List<string> computerInfos = new List<string>();
+        foreach (Process theprocess in processlist)
+        {
+            if (!theprocess.Responding)
+                continue;
+
+            IntPtr hwnd = theprocess.MainWindowHandle;
+            if (IsWindowVisible(hwnd))
+            {
+                StringBuilder title = new StringBuilder(256);
+                GetWindowText(hwnd, title, 256);
+                
+                //Console.WriteLine("Dastur nomi: {0}, ID: {1}, Sarlavha: {2}", theprocess.ProcessName, theprocess.Id, title);
+                computerInfos.Add($"Dastur nomi: {theprocess.ProcessName}, ID: {theprocess.Id}, Sarlavha: {title}");
+            }
+        }
+
+        return computerInfos;
+    }
+
     private void ZapuskBtn_OnClick(object sender, RoutedEventArgs e)
     {
-
-        string[] localIPs = Dns.GetHostAddresses(Dns.GetHostName())
-            .Where(ip => ip.AddressFamily == AddressFamily.InterNetwork)
-            .Select(ip => ip.ToString())
-            .ToArray();
-
-        if (localIPs.Length > 0)
-        {
-            textBlockIP.Text = localIPs[0];
-            //textBlockIP.Text = new WebClient().DownloadString("http://icanhazip.com/");
-        }
-        else
-        {
-            textBlockIP.Text = "IP address not found";
-        }
+        ListView.ItemsSource = GetCurrentProccessApps();
     }
-}
 
-
-
-
-
-public class ComputerInfo
-{
-    public string IPAddress { get; set; }
-    public string MachineName { get; set; }
+    private void Add_OnClick(object sender, RoutedEventArgs e)
+    {
+        throw new NotImplementedException();
+    }
 }
