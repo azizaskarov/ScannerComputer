@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using Microsoft.VisualBasic.Devices;
+using Scanner.DbContext;
+using Scanner.Models;
 
 namespace Scanner.UI.MainMenuFolder;
 
@@ -86,9 +88,7 @@ public partial class MainMenuWin : Window
     }
 
 
-
-
-    private List<string> GetCurrentProccessApps()
+    public List<string> GetCurrentProccessApps()
     {
         Process[] processlist = Process.GetProcesses();
         List<string> computerInfos = new List<string>();
@@ -102,13 +102,29 @@ public partial class MainMenuWin : Window
             {
                 StringBuilder title = new StringBuilder(256);
                 GetWindowText(hwnd, title, 256);
-                
-                //Console.WriteLine("Dastur nomi: {0}, ID: {1}, Sarlavha: {2}", theprocess.ProcessName, theprocess.Id, title);
+
+               
                 computerInfos.Add($"Dastur nomi: {theprocess.ProcessName}, ID: {theprocess.Id}, Sarlavha: {title}");
             }
         }
 
         return computerInfos;
+    }
+
+
+    public string? GetComputerIp()
+    {
+        string[] localIPs = Dns.GetHostAddresses(Dns.GetHostName())
+            .Where(ip => ip.AddressFamily == AddressFamily.InterNetwork)
+            .Select(ip => ip.ToString())
+            .ToArray();
+
+        if (localIPs.Length > 0)
+        {
+            return localIPs[0];
+        }
+
+        return null;
     }
 
     private void ZapuskBtn_OnClick(object sender, RoutedEventArgs e)
@@ -118,6 +134,7 @@ public partial class MainMenuWin : Window
 
     private void Add_OnClick(object sender, RoutedEventArgs e)
     {
-        throw new NotImplementedException();
+        var enterCompNmae = new EnterComputerName(this);
+        enterCompNmae.ShowDialog();
     }
 }

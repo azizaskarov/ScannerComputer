@@ -1,4 +1,6 @@
-﻿namespace Scanner.Models;
+﻿using System.Text;
+
+namespace Scanner.Models;
 
 public class clock_app_list
 {
@@ -6,6 +8,6 @@ public class clock_app_list
     public string id_comp { get; set; }
     public string id_app { get; set; }
     public string app_name { get; set; }
-    public string app_name_title { get; set; }
+    public string app_title { get; set; }
 
 }
