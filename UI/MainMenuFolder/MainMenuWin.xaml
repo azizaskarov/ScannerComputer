@@ -71,7 +71,7 @@
                     <DropShadowEffect ShadowDepth="2" BlurRadius="5"/>
                 </Grid.Effect>
 
-                
+
                 <Button x:Name="butt_Hide" Style="{StaticResource MinusButtonStyle}" Width="40" Height="36" HorizontalAlignment="Right" Margin="10 0 80 0" Padding="0" Visibility="Visible" Click="butt_Hide_Click">
                     <fa:IconImage Icon="Minus" Width="15" Height="15" Foreground="White" RenderTransformOrigin="0.5,0.896"/>
                 </Button>
@@ -87,8 +87,9 @@
 
             <Grid Grid.Row="1">
                 <Button Name="zapuskBtn" Style="{StaticResource btnAuth}" Content="Запуск" VerticalAlignment="Top"  Margin="411,34,411,0" FontSize="25" Click="ZapuskBtn_OnClick" Height="60" Width="150"/>
-                <Button Name="add" Style="{StaticResource btnAuth}" Content="Add" VerticalAlignment="Top" VerticalContentAlignment="Bottom" FontSize="25" Click="Add_OnClick" Height="55" Margin="859,633,8,0"/>
-
+              
+                <fa:IconImage Icon="Refresh" Name="refresh" Cursor="Hand" Foreground="#4285F4" Visibility="Collapsed" MouseLeftButtonDown="Refresh_OnMouseLeftButtonDown" VerticalAlignment="Top" Height="21" Margin="17,18,974,0"/>
+               
                 <ScrollViewer VerticalScrollBarVisibility="Auto"  Margin="10,120,10,70" >
                     <ListBox Margin="5" Name="ListView"  FontSize="20" Height="490" Width="983"/>
                 </ScrollViewer>

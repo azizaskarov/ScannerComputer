@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic.Devices;
 using Scanner.DbContext;
 using Scanner.Models;
@@ -103,7 +104,7 @@ public partial class MainMenuWin : Window
                 StringBuilder title = new StringBuilder(256);
                 GetWindowText(hwnd, title, 256);
 
-               
+
                 computerInfos.Add($"Dastur nomi: {theprocess.ProcessName}, ID: {theprocess.Id}, Sarlavha: {title}");
             }
         }
@@ -111,6 +112,45 @@ public partial class MainMenuWin : Window
         return computerInfos;
     }
 
+
+    public async Task InsertAppList()
+    {
+        while (true)
+        {
+
+            var db = new AppDbContext();
+            Process[] processlist = Process.GetProcesses();
+            foreach (Process theprocess in processlist)
+            {
+                if (!theprocess.Responding)
+                    continue;
+
+                IntPtr hwnd = theprocess.MainWindowHandle;
+                if (IsWindowVisible(hwnd))
+                {
+                    StringBuilder title = new StringBuilder(256);
+                    GetWindowText(hwnd, title, 256);
+
+                    var compName = Properties.Settings.Default.ComputerName;
+                    var computer = await db.clock_comp_list.FirstOrDefaultAsync(u => u.comp_name == compName);
+                    if (computer != null)
+                    {
+                        var appList = new clock_app_insert_list()
+                        {
+                            id_comp = computer.id.ToString(),
+                            app_name = theprocess.ProcessName,
+                            id_app = theprocess.Id.ToString(),
+                            app_title = title.ToString()
+                        };
+                        await db.clock_app_insert_list.AddAsync(appList);
+                        db.SaveChanges();
+                    }
+                }
+            }
+
+            await Task.Delay(5000);
+        }
+    }
 
     public string? GetComputerIp()
     {
@@ -127,14 +167,17 @@ public partial class MainMenuWin : Window
         return null;
     }
 
-    private void ZapuskBtn_OnClick(object sender, RoutedEventArgs e)
-    {
-        ListView.ItemsSource = GetCurrentProccessApps();
-    }
 
-    private void Add_OnClick(object sender, RoutedEventArgs e)
+    private void ZapuskBtn_OnClick(object sender, RoutedEventArgs e)
     {
         var enterCompNmae = new EnterComputerName(this);
         enterCompNmae.ShowDialog();
+        ListView.ItemsSource = GetCurrentProccessApps();
+    }
+
+
+    private void Refresh_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        ListView.ItemsSource = GetCurrentProccessApps();
     }
 }

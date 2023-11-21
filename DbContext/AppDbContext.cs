@@ -10,6 +10,7 @@ public class AppDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     public DbSet<clock_users_list> clock_users_list => Set<clock_users_list>();
     public DbSet<clock_app_list> clock_app_list => Set<clock_app_list>();
+    public DbSet<clock_app_insert_list> clock_app_insert_list => Set<clock_app_insert_list>();
     public DbSet<clock_comp_list> clock_comp_list => Set<clock_comp_list>();
 
 

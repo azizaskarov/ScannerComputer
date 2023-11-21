@@ -46,5 +46,17 @@ namespace Scanner.Properties {
                 this["UserPassword"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ComputerName {
+            get {
+                return ((string)(this["ComputerName"]));
+            }
+            set {
+                this["ComputerName"] = value;
+            }
+        }
     }
 }
