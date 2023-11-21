@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
@@ -117,7 +118,6 @@ public partial class MainMenuWin : Window
     {
         while (true)
         {
-
             var db = new AppDbContext();
             Process[] processlist = Process.GetProcesses();
             foreach (Process theprocess in processlist)
@@ -135,16 +135,22 @@ public partial class MainMenuWin : Window
                     var computer = await db.clock_comp_list.FirstOrDefaultAsync(u => u.comp_name == compName);
                     if (computer != null)
                     {
-                        var appList = new clock_app_insert_list()
+                        if (!db.clock_app_history_list.Any(that => that.app_title == title.ToString()))
                         {
-                            id_comp = computer.id.ToString(),
-                            app_name = theprocess.ProcessName,
-                            id_app = theprocess.Id.ToString(),
-                            app_title = title.ToString()
-                        };
-                        await db.clock_app_insert_list.AddAsync(appList);
-                        db.SaveChanges();
+                            var appList = new clock_app_history_list()
+                            {
+                                id_comp = computer.id.ToString(),
+                                app_name = theprocess.ProcessName,
+                                id_app = theprocess.Id.ToString(),
+                                app_title = title.ToString(),
+                                open_datetime = DateTime.Now,
+                                open_datetime_uni = DateTime.UtcNow.Ticks.ToString()
+                            };
+                            await db.clock_app_history_list.AddAsync(appList);
+                            await db.SaveChangesAsync();
+                        }
                     }
+
                 }
             }
 
@@ -168,13 +174,78 @@ public partial class MainMenuWin : Window
     }
 
 
-    private void ZapuskBtn_OnClick(object sender, RoutedEventArgs e)
+    private async void ZapuskBtn_OnClick(object sender, RoutedEventArgs e)
     {
-        var enterCompNmae = new EnterComputerName(this);
-        enterCompNmae.ShowDialog();
-        ListView.ItemsSource = GetCurrentProccessApps();
+        if (Properties.Settings.Default.ComputerName.Length == 0)
+        {
+            var enterCompNmae = new EnterComputerName(this);
+            enterCompNmae.ShowDialog();
+            ListView.ItemsSource = GetCurrentProccessApps();
+        }
+        else
+        {
+            using (var db = new AppDbContext())
+            {
+                ListView.ItemsSource = GetCurrentProccessApps();
+                var comp = await db.clock_comp_list.FirstAsync(that =>
+                    that.comp_name.Equals(Properties.Settings.Default.ComputerName));
+
+                await SaveCurrentProcessApps(comp.id);
+
+            }
+
+        }
+
     }
 
+
+    public async Task SaveCurrentProcessApps(int id)
+    {
+        var db = new AppDbContext();
+        Process[] processlist = Process.GetProcesses();
+
+        foreach (Process theprocess in processlist)
+        {
+            if (!theprocess.Responding)
+                continue;
+
+            IntPtr hwnd = theprocess.MainWindowHandle;
+
+            if (IsWindowVisible(hwnd))
+            {
+                StringBuilder title = new StringBuilder(256);
+                GetWindowText(hwnd, title, 256);
+
+                var computer = await db.clock_comp_list.FirstOrDefaultAsync(u => u.id.Equals(id));
+
+                if (computer != null)
+                {
+                    var appList = new clock_app_list()
+                    {
+                        id_comp = id.ToString(),
+                        app_name = theprocess.ProcessName,
+                        id_app = theprocess.Id.ToString(),
+                        app_title = title.ToString()
+                    };
+
+                    //for (int i = 0; i < appList.app_title.Length; i++)
+                    //{
+                    //    if (appList.app_title[i].Equals('/'))
+                    //    {
+                    //        appList.app_title = appList.app_title.Replace("/", "{\n ");
+                    //    }
+                    //}
+
+
+                    await db.clock_app_list.AddAsync(appList);
+                    await db.SaveChangesAsync();
+                }
+            }
+        }
+
+
+        await InsertAppList();
+    }
 
     private void Refresh_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {

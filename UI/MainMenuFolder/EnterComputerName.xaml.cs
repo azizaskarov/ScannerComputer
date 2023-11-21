@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Scanner.UI.MainMenuFolder;
 
@@ -31,32 +32,20 @@ public partial class EnterComputerName : Window
 
     [DllImport("user32.dll")]
     static extern bool IsWindowVisible(IntPtr hWnd);
-    private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+    private async void ButtonBase_OnClick(object sender, RoutedEventArgs e)
     {
-        var db = new AppDbContext();
-        var computerIp = mainMenu.GetComputerIp();
-        if (computerName.Text.Length != 0)
+        try
         {
-            var comp = db.clock_comp_list.First(c => c.comp_name == computerName.Text);
-            if (db.clock_comp_list.Any(c => c.ip == comp.ip))
+            var db = new AppDbContext();
+            var computerIp = mainMenu.GetComputerIp();
+
+            if (computerName.Text.Length != 0)
             {
-                if (computerIp != null)
+                if (db.clock_comp_list.Any(that => that.comp_name == computerName.Text))
                 {
-
-                    comp.ip = computerIp;
-                    comp.comp_name = computerName.Text;
-
-                    Properties.Settings.Default.ComputerName = comp.comp_name;
-                    db.clock_comp_list.Update(comp);
-                    db.SaveChanges();
-                    Close();
-                    MessageBox.Show("Success");
-                    SaveCurrentProccessApps(comp.id);
-                    mainMenu.refresh.Visibility = Visibility.Visible;
+                    MessageBox.Show("Already exists");
+                    return;
                 }
-            }
-            else
-            {
                 if (computerIp != null)
                 {
                     var clock_comp = new clock_comp_list()
@@ -67,56 +56,30 @@ public partial class EnterComputerName : Window
                     };
 
                     Properties.Settings.Default.ComputerName = clock_comp.comp_name;
+                    Properties.Settings.Default.Save();
                     db.clock_comp_list.Add(clock_comp);
                     db.SaveChanges();
                     Close();
-                    MessageBox.Show("Success");
-                    SaveCurrentProccessApps(clock_comp.id);
+                    MessageBox.Show("Success"); 
+                    await mainMenu.SaveCurrentProcessApps(clock_comp.id);
                     mainMenu.refresh.Visibility = Visibility.Visible;
                 }
-              
+
             }
-
-        }
-        else
-        {
-            MessageBox.Show("Pustoy polya");
-        }
-    }
-
-   
-    public async void SaveCurrentProccessApps(int id)
-    {
-        var db = new AppDbContext();
-        Process[] processlist = Process.GetProcesses();
-        foreach (Process theprocess in processlist)
-        {
-            if (!theprocess.Responding)
-                continue;
-
-            IntPtr hwnd = theprocess.MainWindowHandle;
-            if (IsWindowVisible(hwnd))
+            else
             {
-                StringBuilder title = new StringBuilder(256);
-                GetWindowText(hwnd, title, 256);
-
-                var computer =await db.clock_comp_list.FirstOrDefaultAsync(u => u.id.Equals(id));
-                if (computer != null)
-                {
-                    var appList = new clock_app_list()
-                    {
-                        id_comp = id.ToString(),
-                        app_name = theprocess.ProcessName,
-                        id_app = theprocess.Id.ToString(),
-                        app_title = title.ToString()
-                    };
-                    await db.clock_app_list.AddAsync(appList);
-                    db.SaveChanges();
-                   await  mainMenu.InsertAppList();
-                }
+                MessageBox.Show("Pustoy polya");
             }
         }
+        catch (Exception a)
+        {
+            MessageBox.Show(a.ToString());
+            throw;
+        }
     }
+
+
+    
 
     private void ComputerName_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
     {
